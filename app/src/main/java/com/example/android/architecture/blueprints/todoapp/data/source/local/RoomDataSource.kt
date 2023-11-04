@@ -18,11 +18,11 @@ class RoomDataSource internal constructor(
         return prDao.allPrs()
     }
 
-    override suspend fun deleteAllPrs() = withContext(ioDispatcher){
+    override suspend fun deleteAllTasks() = withContext(ioDispatcher){
         prDao.deletePrs()
     }
 
-    override suspend fun insertPrs(prList: List<Task>) = withContext(ioDispatcher){
+    override suspend fun insertTasks(prList: List<Task>) = withContext(ioDispatcher){
         prDao.insertAll(prList)
     }
 

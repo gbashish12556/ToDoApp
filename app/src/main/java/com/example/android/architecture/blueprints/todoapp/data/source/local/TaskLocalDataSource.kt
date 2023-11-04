@@ -5,6 +5,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface TaskLocalDataSource {
     fun getPrs(): Flow<List<Task>>
-    suspend fun deleteAllPrs()
-    suspend fun insertPrs(prList:List<Task>)
+    suspend fun deleteAllTasks()
+    suspend fun insertTasks(prList:List<Task>)
 }
