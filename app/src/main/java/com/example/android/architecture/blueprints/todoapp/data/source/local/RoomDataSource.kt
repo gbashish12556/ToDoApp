@@ -1,6 +1,7 @@
 package com.example.kutumbreadsms.data.source.db
 
 import androidx.lifecycle.LiveData
+import com.example.android.architecture.blueprints.todoapp.TaskScereen.FilterType
 import com.example.android.architecture.blueprints.todoapp.data.response.Task
 import com.example.android.architecture.blueprints.todoapp.data.source.local.TaskLocalDataSource
 import com.example.truecreditslist.db.PrDao
@@ -14,8 +15,8 @@ class RoomDataSource internal constructor(
     private val prDao: PrDao,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO ) : TaskLocalDataSource{
 
-    override fun getPrs(): Flow<List<Task>> {
-        return prDao.allPrs()
+    override fun getTasks(filterType: FilterType): Flow<List<Task>> {
+        return prDao.allTasks(filterType.queryParams)
     }
 
     override suspend fun deleteAllTasks() = withContext(ioDispatcher){

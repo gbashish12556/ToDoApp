@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.databinding.ktx.BuildConfig
 import androidx.room.Room
 import com.example.android.architecture.blueprints.todoapp.common.Constants
+import com.example.android.architecture.blueprints.todoapp.data.source.DefaultTaskRepository
 import com.example.android.architecture.blueprints.todoapp.data.source.local.TaskLocalDataSource
 import com.example.android.architecture.blueprints.todoapp.data.source.remote.TaskRemoteDataSource
 import com.example.android.architecture.blueprints.todoapp.utils.NetworkHelper
@@ -23,7 +24,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
-e
+
 @InstallIn(SingletonComponent::class)
 class ApplicationModule {
 
@@ -80,11 +81,11 @@ class ApplicationModule {
 
     @Provides
     @Singleton
-    fun providePrRepository(prRemoteDataSource: TaskRemoteDataSource,
+    fun provideTaskRepository(prRemoteDataSource: TaskRemoteDataSource,
                             prLocalDataSource: TaskLocalDataSource,
                             networkHelper: NetworkHelper
     ): TaskRepository {
-        return DefaultPreRepository(prRemoteDataSource, prLocalDataSource, networkHelper);
+        return DefaultTaskRepository(prRemoteDataSource, prLocalDataSource, networkHelper);
     }
 
     @Provides
