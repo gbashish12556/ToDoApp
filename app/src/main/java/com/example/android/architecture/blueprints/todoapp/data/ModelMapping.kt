@@ -26,8 +26,8 @@ fun Task.toLocal() = TaskLocal(
     isCompleted  = isCompleted
 )
 
-fun Task.toRemote() = TaskRemote(
-    id = id,
+fun Task.toRemote(remoteId:Int) = TaskRemote(
+    id = remoteId,
     title = title,
     content = content,
     status  = if(isCompleted == true) Status.COMPLETED else Status.ACTIVE

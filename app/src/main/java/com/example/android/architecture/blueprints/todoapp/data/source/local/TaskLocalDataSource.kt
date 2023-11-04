@@ -8,6 +8,10 @@ interface TaskLocalDataSource {
     suspend fun updateTask(taskLocal:TaskLocal)
 
     suspend fun addTask(taskLocal:TaskLocal)
+
+    suspend fun getRemoteId(localId:Int):Int
+
     suspend fun deleteAllTasks()
+
     suspend fun insertTasks(prList:List<TaskLocal>)
 }

@@ -35,14 +35,14 @@ class DefaultTaskRepository(
     override suspend fun updateTask(task: Task) {
         withContext(coroutineDispatcher){
             taskLocalDataSource.addTask(task.toLocal())
-            taskRemoteDataSource.updateTask(task.toRemote())
+            taskRemoteDataSource.updateTask(task.toRemote(taskLocalDataSource.getRemoteId(task.id)))
         }
     }
 
     override suspend fun addTask(task: Task) {
         withContext(coroutineDispatcher) {
             taskLocalDataSource.addTask(task.toLocal())
-            taskRemoteDataSource.updateTask(task.toRemote())
+            taskRemoteDataSource.updateTask(task.toRemote(taskLocalDataSource.getRemoteId(task.id)))
         }
     }
 

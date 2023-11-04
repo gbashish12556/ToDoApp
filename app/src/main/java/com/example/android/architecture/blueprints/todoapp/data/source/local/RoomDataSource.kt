@@ -25,6 +25,10 @@ class RoomDataSource internal constructor(
         prDao.insert(taskLocal)
     }
 
+    override suspend fun getRemoteId(localId: Int): Int {
+       return prDao.getRemoteId(localId)
+    }
+
     override suspend fun deleteAllTasks() = withContext(ioDispatcher){
         prDao.deletePrs()
     }
