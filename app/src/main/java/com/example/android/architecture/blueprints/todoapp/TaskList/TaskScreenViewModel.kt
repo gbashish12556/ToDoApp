@@ -1,5 +1,6 @@
-package com.example.android.architecture.blueprints.todoapp.TaskScereen
+package com.example.android.architecture.blueprints.todoapp.TaskList
 
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -11,13 +12,13 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class TaskScreenViewModel @Inject
-constructor(val getTaskListUseCase: GetTaskListUseCase,
+class TaskScreenViewModel @Inject constructor(
+    val getTaskListUseCase: GetTaskListUseCase,
             savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
     private var _uiState = MutableStateFlow(TasksUiState())
-    var uiStateg:StateFlow<TasksUiState> = _uiState.asStateFlow()
+    var uiState:StateFlow<TasksUiState> = _uiState.asStateFlow()
 
     init {
         refreshTask()
@@ -27,7 +28,7 @@ constructor(val getTaskListUseCase: GetTaskListUseCase,
 
         viewModelScope.launch {
 
-            getTaskListUseCase().collect{result->
+            getTaskListUseCase(All()).collect{result->
                 when(result){
                     is Resource.Error -> {
                         _uiState.update {
@@ -48,6 +49,7 @@ constructor(val getTaskListUseCase: GetTaskListUseCase,
                     }
                 }
             }
+
         }
     }
 }

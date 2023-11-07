@@ -1,6 +1,6 @@
 package com.example.navigithubpr.data.source
 
-import com.example.android.architecture.blueprints.todoapp.TaskScereen.FilterType
+import com.example.android.architecture.blueprints.todoapp.TaskList.FilterType
 import com.example.android.architecture.blueprints.todoapp.common.Resource
 import com.example.android.architecture.blueprints.todoapp.data.source.Task
 import kotlinx.coroutines.flow.Flow

@@ -16,74 +16,25 @@
 
 package com.example.android.architecture.blueprints.todoapp
 
-import android.app.Activity
-import androidx.compose.material.DrawerState
-import androidx.compose.material.DrawerValue
-import androidx.compose.material.rememberDrawerState
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Modifier
-import androidx.navigation.NavHostController
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
-import com.example.android.architecture.blueprints.todoapp.TodoDestinationsArgs.TASK_ID_ARG
-import com.example.android.architecture.blueprints.todoapp.TodoDestinationsArgs.TITLE_ARG
-import com.example.android.architecture.blueprints.todoapp.TodoDestinationsArgs.USER_MESSAGE_ARG
-import kotlinx.coroutines.CoroutineScope
+import com.example.android.architecture.blueprints.todoapp.TaskList.TaskScreen
 
 @Composable
-fun TodoNavGraph(
-    modifier: Modifier = Modifier,
-    navController: NavHostController = rememberNavController(),
-    coroutineScope: CoroutineScope = rememberCoroutineScope(),
-    drawerState: DrawerState = rememberDrawerState(initialValue = DrawerValue.Closed),
-    startDestination: String = TodoDestinations.TASKS_ROUTE,
-    navActions: TodoNavigationActions = remember(navController) {
-        TodoNavigationActions(navController)
-    }
-) {
-    val currentNavBackStackEntry by navController.currentBackStackEntryAsState()
-    val currentRoute = currentNavBackStackEntry?.destination?.route ?: startDestination
+fun TodoNavGraph() {
+    Surface(color = MaterialTheme.colors.background) {
+        val navController = rememberNavController()
+        NavHost(navController = navController, startDestination = TodoDestinations.TASKS_ROUTE ){
 
-    NavHost(
-        navController = navController,
-        startDestination = startDestination,
-        modifier = modifier
-    ) {
-        composable(
-            TodoDestinations.TASKS_ROUTE,
-            arguments = listOf(
-                navArgument(USER_MESSAGE_ARG) { type = NavType.IntType; defaultValue = 0 }
-            )
-        ) { entry ->
-
-        }
-        composable(TodoDestinations.STATISTICS_ROUTE) {
-
-        }
-        composable(
-            TodoDestinations.ADD_EDIT_TASK_ROUTE,
-            arguments = listOf(
-                navArgument(TITLE_ARG) { type = NavType.IntType },
-                navArgument(TASK_ID_ARG) { type = NavType.StringType; nullable = true },
-            )
-        ) { entry ->
-            val taskId = entry.arguments?.getString(TASK_ID_ARG)
-
-        }
-        composable(TodoDestinations.TASK_DETAIL_ROUTE) {
+            composable(
+                route = TodoDestinations.TASKS_ROUTE
+            ){
+                TaskScreen()
+            }
 
         }
     }
 }
-
-// Keys for navigation
-const val ADD_EDIT_RESULT_OK = Activity.RESULT_FIRST_USER + 1
-const val DELETE_RESULT_OK = Activity.RESULT_FIRST_USER + 2
-const val EDIT_RESULT_OK = Activity.RESULT_FIRST_USER + 3

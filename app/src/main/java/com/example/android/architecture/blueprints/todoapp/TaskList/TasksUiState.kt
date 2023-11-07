@@ -1,4 +1,4 @@
-package com.example.android.architecture.blueprints.todoapp.TaskScereen
+package com.example.android.architecture.blueprints.todoapp.TaskList
 
 import com.example.android.architecture.blueprints.todoapp.data.source.Task
 

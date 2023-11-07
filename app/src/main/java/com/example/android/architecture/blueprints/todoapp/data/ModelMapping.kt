@@ -5,36 +5,36 @@ import com.example.android.architecture.blueprints.todoapp.data.response.TaskRem
 import com.example.android.architecture.blueprints.todoapp.data.source.Task
 import com.example.android.architecture.blueprints.todoapp.data.source.local.TaskLocal
 
-fun TaskRemote.toLocal() = TaskLocal(
-    id = id,
+fun TaskRemote.remoteToLocal() = TaskLocal(
+    remoteId = id,
     title = title,
     content = content,
     isCompleted = status == Status.COMPLETED
 )
 
-fun TaskLocal.toTask() = Task(
+fun TaskLocal.localToTask() = Task(
     id = id,
     title = title,
     content = content,
     isCompleted  = isCompleted
 )
 
-fun Task.toLocal() = TaskLocal(
+fun Task.taskToLocal() = TaskLocal(
     id = id,
     title = title,
     content = content,
     isCompleted  = isCompleted
 )
 
-fun Task.toRemote(remoteId:Int) = TaskRemote(
+fun Task.taskToRemote(remoteId:Int) = TaskRemote(
     id = remoteId,
     title = title,
     content = content,
     status  = if(isCompleted == true) Status.COMPLETED else Status.ACTIVE
 )
 
-fun List<Task>.toLocal() = map { task: Task ->  task.toLocal()}
+fun List<Task>.toTaskToLocal() = map { task: Task ->  task.taskToLocal()}
 
-fun List<TaskLocal>.toTask() = map { taskLocal: TaskLocal ->  taskLocal.toTask()}
+fun List<TaskLocal>.toLocalToTask() = map { taskLocal: TaskLocal ->  taskLocal.localToTask()}
 
-fun List<TaskRemote>.toLocal() = map { taskremote: TaskRemote ->  taskremote.toLocal()}
+fun List<TaskRemote>.remoteToLocal() = map { taskremote: TaskRemote ->  taskremote.remoteToLocal()}
