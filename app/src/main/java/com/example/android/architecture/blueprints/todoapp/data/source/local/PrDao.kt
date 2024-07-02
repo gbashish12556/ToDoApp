@@ -20,6 +20,9 @@ interface PrDao {
     @Query("SELECT * FROM task_table WHERE isCompleted in (:filters)")
     fun allTasks(filters:List<Boolean>): Flow<List<TaskLocal>>
 
+    @Query("SELECT * FROM task_table WHERE id = :localId")
+    fun getTask(localId:Int): Flow<TaskLocal>
+
     @Query("SELECT remoteId FROM task_table WHERE id = :localId")
     suspend fun getRemoteId(localId:Int):Int
 

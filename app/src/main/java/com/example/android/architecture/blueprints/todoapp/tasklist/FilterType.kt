@@ -1,4 +1,4 @@
-package com.example.android.architecture.blueprints.todoapp.TaskList
+package com.example.android.architecture.blueprints.todoapp.tasklist
 
 abstract class FilterType {
     abstract val text: String

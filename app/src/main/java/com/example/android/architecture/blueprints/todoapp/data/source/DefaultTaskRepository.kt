@@ -1,18 +1,16 @@
 package com.example.android.architecture.blueprints.todoapp.data.source
 
 import android.util.Log
-import com.example.android.architecture.blueprints.todoapp.TaskList.FilterType
+import com.example.android.architecture.blueprints.todoapp.tasklist.FilterType
 import com.example.android.architecture.blueprints.todoapp.common.Resource
-import com.example.android.architecture.blueprints.todoapp.data.remoteToLocal
+import com.example.android.architecture.blueprints.todoapp.data.*
 import com.example.android.architecture.blueprints.todoapp.data.source.local.TaskLocalDataSource
 import com.example.android.architecture.blueprints.todoapp.data.source.remote.TaskRemoteDataSource
-import com.example.android.architecture.blueprints.todoapp.data.taskToLocal
-import com.example.android.architecture.blueprints.todoapp.data.taskToRemote
-import com.example.android.architecture.blueprints.todoapp.data.toLocalToTask
 import com.example.android.architecture.blueprints.todoapp.utils.NetworkHelper
 import com.example.navigithubpr.data.source.TaskRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.withContext
 
@@ -41,6 +39,16 @@ class DefaultTaskRepository(
         }
     }
 
+    override suspend fun getTask(taskId: Int)= flow {
+        try {
+            taskLocalDataSource.getTask(taskId).collect{data->
+                emit(Resource.Success(data.localToTask()))
+            }
+        }catch (e:java.lang.Exception){
+            emit(Resource.Error(message = "Failed"))
+        }
+    }
+
     override suspend fun addTask(task: Task) {
         withContext(coroutineDispatcher) {
             taskLocalDataSource.addTask(task.taskToLocal())
@@ -56,7 +64,6 @@ class DefaultTaskRepository(
                     remoteTasks.body()?.data?.let {list->
                         if(list.size!! > 0){
                             taskLocalDataSource.deleteAllTasks()
-                            Log.d("AshishGupta",list.remoteToLocal().toString())
                             taskLocalDataSource.insertTasks(list.remoteToLocal())
                         }
                     }

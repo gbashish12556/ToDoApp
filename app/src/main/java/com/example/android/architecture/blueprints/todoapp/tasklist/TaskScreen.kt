@@ -1,6 +1,6 @@
-package com.example.android.architecture.blueprints.todoapp.TaskList
+package com.example.android.architecture.blueprints.todoapp.tasklist
 
-import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.runtime.Composable
@@ -21,13 +21,14 @@ import androidx.compose.ui.graphics.Color
 
 @Composable
 fun TaskScreen(
-    taskViewModel:TaskScreenViewModel = hiltViewModel()
+    taskViewModel:TaskScreenViewModel = hiltViewModel(),
+    onTaskClick:(Task)->Unit
 ){
 
     var uistate = taskViewModel.uiState.collectAsState().value
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center){
         uistate.tasks?.let {list->
-            TaskList(list = list)
+            TaskList(list = list, onTaskClick)
         }
         if(uistate.isLoading){
             CircularProgressIndicator()
@@ -40,20 +41,21 @@ fun TaskScreen(
 }
 
 @Composable
-fun TaskList(list:List<Task>){
+fun TaskList(list:List<Task>,onTaskClick:(Task)->Unit){
     LazyColumn(modifier = Modifier.fillMaxSize()){
         items(list){task->
-            TaskItem(task = task)
+            TaskItem(task = task, onTaskClick)
         }
     }
 }
 @Composable
-fun TaskItem(task: Task){
+fun TaskItem(task: Task,onTaskClick:(Task)->Unit){
     Column(modifier = Modifier.fillMaxWidth()) {
 
         Row(modifier = Modifier
             .fillMaxWidth()
-            .padding(20.dp), verticalAlignment = Alignment.CenterVertically) {
+            .padding(20.dp).clickable { onTaskClick(task) },
+            verticalAlignment = Alignment.CenterVertically) {
             var isClicked  = remember {
                 mutableStateOf(task.isCompleted)
             }
@@ -61,7 +63,6 @@ fun TaskItem(task: Task){
             CheckBoxItem(isClicked = isClicked.value, onCheckBoxClick = {bool-> isClicked.value = bool})
             Spacer(modifier = Modifier.width(20.dp))
             Text(text = task.title)
-
         }
 
         Divider(color = Color.Blue, thickness = 1.dp)

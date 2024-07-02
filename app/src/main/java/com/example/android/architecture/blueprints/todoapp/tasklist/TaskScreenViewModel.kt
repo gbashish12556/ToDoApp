@@ -1,6 +1,5 @@
-package com.example.android.architecture.blueprints.todoapp.TaskList
+package com.example.android.architecture.blueprints.todoapp.tasklist
 
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -17,8 +16,8 @@ class TaskScreenViewModel @Inject constructor(
             savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    private var _uiState = MutableStateFlow(TasksUiState())
-    var uiState:StateFlow<TasksUiState> = _uiState.asStateFlow()
+    private var _uiState = MutableStateFlow(TaskListUiState())
+    var uiState:StateFlow<TaskListUiState> = _uiState.asStateFlow()
 
     init {
         refreshTask()

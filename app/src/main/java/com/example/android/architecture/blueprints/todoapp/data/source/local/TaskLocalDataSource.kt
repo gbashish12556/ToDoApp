@@ -1,10 +1,13 @@
 package com.example.android.architecture.blueprints.todoapp.data.source.local
 
-import com.example.android.architecture.blueprints.todoapp.TaskList.FilterType
+import com.example.android.architecture.blueprints.todoapp.tasklist.FilterType
 import kotlinx.coroutines.flow.Flow
 
 interface TaskLocalDataSource {
     fun getTasks(filterType: FilterType): Flow<List<TaskLocal>>
+
+    fun getTask(taskId:Int): Flow<TaskLocal>
+
     suspend fun updateTask(taskLocal:TaskLocal)
 
     suspend fun addTask(taskLocal:TaskLocal)

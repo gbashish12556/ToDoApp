@@ -16,25 +16,49 @@
 
 package com.example.android.architecture.blueprints.todoapp
 
+import android.app.Activity
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.android.architecture.blueprints.todoapp.TaskList.TaskScreen
+import com.example.android.architecture.blueprints.todoapp.taskdetail.TaskDetailScreen
+import com.example.android.architecture.blueprints.todoapp.tasklist.TaskScreen
 
 @Composable
-fun TodoNavGraph() {
+fun TodoNavGraph(
+    navController: NavHostController = rememberNavController(),
+    navActions: TodoNavigationActions = remember(navController) {
+        TodoNavigationActions(navController)
+    }
+) {
     Surface(color = MaterialTheme.colors.background) {
-        val navController = rememberNavController()
-        NavHost(navController = navController, startDestination = TodoDestinations.TASKS_ROUTE ){
-
+        NavHost(
+            navController = navController,
+            startDestination = TodoDestinations.TASKS_ROUTE
+        ){
             composable(
                 route = TodoDestinations.TASKS_ROUTE
             ){
-                TaskScreen()
+                TaskScreen(
+                    onTaskClick = { task -> navActions.navigateToTaskDetail(task.id) }
+                )
             }
-
+            composable(route = TodoDestinations.TASK_DETAIL_ROUTE) {
+                TaskDetailScreen(
+                    onEditTask = { taskId ->
+                        navActions.navigateToAddEditTask(R.string.edit_task, taskId)
+                    },
+                    onBack = { navController.popBackStack() },
+                    onDeleteTask = { navActions.navigateToTasks(DELETE_RESULT_OK) }
+                )
+            }
         }
     }
 }
+
+const val ADD_EDIT_RESULT_OK = Activity.RESULT_FIRST_USER + 1
+const val DELETE_RESULT_OK = Activity.RESULT_FIRST_USER + 2
+const val EDIT_RESULT_OK = Activity.RESULT_FIRST_USER + 3
