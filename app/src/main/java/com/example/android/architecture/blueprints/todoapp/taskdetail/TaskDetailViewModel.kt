@@ -5,10 +5,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.android.architecture.blueprints.todoapp.TodoDestinationsArgs
 import com.example.android.architecture.blueprints.todoapp.common.Resource
-import com.example.android.architecture.blueprints.todoapp.tasklist.All
-import com.example.android.architecture.blueprints.todoapp.tasklist.TaskListUiState
+import com.example.android.architecture.blueprints.todoapp.usecases.DeleteTaskUseCase
 import com.example.android.architecture.blueprints.todoapp.usecases.GetTaskUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -20,11 +20,13 @@ import javax.inject.Inject
 @HiltViewModel
 class TaskDetailViewModel @Inject constructor(
     val getTaskUseCase: GetTaskUseCase,
+    val deleteTaskUseCase: DeleteTaskUseCase,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
     val taskIdString: String? = savedStateHandle[TodoDestinationsArgs.TASK_ID_ARG]!!
-    val taskId: Int = taskIdString?.toIntOrNull() ?: throw IllegalArgumentException("Invalid Task ID")
+    val taskId: Int =
+        taskIdString?.toIntOrNull() ?: throw IllegalArgumentException("Invalid Task ID")
 
     private var _uiState = MutableStateFlow(TaskDetailUiState())
     var uiState: StateFlow<TaskDetailUiState> = _uiState.asStateFlow()
@@ -33,12 +35,12 @@ class TaskDetailViewModel @Inject constructor(
         refreshTask()
     }
 
-    fun refreshTask(){
+    fun refreshTask() {
 
         viewModelScope.launch {
 
-            getTaskUseCase(taskId).collect{ result->
-                when(result){
+            getTaskUseCase(taskId).collect { result ->
+                when (result) {
                     is Resource.Error -> {
                         _uiState.update {
                             it.copy(isLoadingFailed = true, errorMessage = result.message!!)
@@ -46,12 +48,12 @@ class TaskDetailViewModel @Inject constructor(
                     }
                     is Resource.Loading -> {
                         _uiState.update {
-                            it.copy(isLoading =  true)
+                            it.copy(isLoading = true)
                         }
                     }
                     is Resource.Success -> {
-                        _uiState.update { state->
-                            result.data.let { data->
+                        _uiState.update { state ->
+                            result.data.let { data ->
                                 state.copy(task = data!!)
                             }
                         }
@@ -60,6 +62,11 @@ class TaskDetailViewModel @Inject constructor(
             }
 
         }
+    }
+
+    fun deleteTask() = viewModelScope.launch(Dispatchers.IO) {
+        deleteTaskUseCase(taskId)
+        _uiState.value = _uiState.value.copy(isTaskDeleted = true)
     }
 
 }

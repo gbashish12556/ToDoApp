@@ -1,6 +1,5 @@
 package com.example.truecreditslist.db
 
-import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -18,13 +17,16 @@ interface PrDao {
     suspend fun insert(taskLocal: TaskLocal)
 
     @Query("SELECT * FROM task_table WHERE isCompleted in (:filters)")
-    fun allTasks(filters:List<Boolean>): Flow<List<TaskLocal>>
+    fun allTasks(filters: List<Boolean>): Flow<List<TaskLocal>>
 
     @Query("SELECT * FROM task_table WHERE id = :localId")
-    fun getTask(localId:Int): Flow<TaskLocal>
+    fun getTask(localId: Int): Flow<TaskLocal>
+
+    @Query("DELETE FROM task_table WHERE id = :localId")
+    fun deleteTask(localId: Int)
 
     @Query("SELECT remoteId FROM task_table WHERE id = :localId")
-    suspend fun getRemoteId(localId:Int):Int
+    suspend fun getRemoteId(localId: Int): Int
 
     @Query("DELETE FROM task_table")
     suspend fun deletePrs()

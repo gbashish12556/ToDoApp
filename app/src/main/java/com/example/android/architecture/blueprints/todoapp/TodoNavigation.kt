@@ -66,8 +66,12 @@ class TodoNavigationActions(private val navController: NavHostController) {
 
     }
 
-    fun navigateToTasks(result: Int? = null) {
-
+    fun navigateToTasks(result: Int = 0) {
+        navController.navigate(
+            TASKS_SCREEN.let { it ->
+                if (result != 0) "${it}?${USER_MESSAGE_ARG}=${result}" else it
+            }
+        )
     }
 
     fun navigateToStatistics() {
