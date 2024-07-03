@@ -16,8 +16,6 @@
 
 package com.example.android.architecture.blueprints.todoapp
 
-import android.util.Log
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import com.example.android.architecture.blueprints.todoapp.TodoDestinationsArgs.TASK_ID_ARG
 import com.example.android.architecture.blueprints.todoapp.TodoDestinationsArgs.TITLE_ARG
@@ -61,15 +59,18 @@ object TodoDestinations {
  */
 class TodoNavigationActions(private val navController: NavHostController) {
     fun navigateToTaskDetail(taskId: Int) {
-        navController?.navigate("$TASK_DETAIL_SCREEN/$taskId")
+        navController.navigate("$TASK_DETAIL_SCREEN/$taskId")
     }
 
-    fun navigateToAddEditTask(title:Int, taskId:Int){
-
-    }
-
-    fun navigateToTasks(result:Int){
+    fun navigateToAddEditTask(title: Int, taskId: Int) {
 
     }
 
+    fun navigateToTasks(result: Int? = null) {
+
+    }
+
+    fun navigateToStatistics() {
+
+    }
 }
