@@ -1,6 +1,6 @@
 package com.example.android.architecture.blueprints.todoapp.data.source.local
 
-import com.example.android.architecture.blueprints.todoapp.tasklist.FilterType
+import com.example.android.architecture.blueprints.todoapp.screens.tasklist.FilterType
 import kotlinx.coroutines.flow.Flow
 
 interface TaskLocalDataSource {

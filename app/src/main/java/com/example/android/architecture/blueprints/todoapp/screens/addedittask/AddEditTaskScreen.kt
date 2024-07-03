@@ -1,4 +1,4 @@
-package com.example.android.architecture.blueprints.todoapp.addedittask
+package com.example.android.architecture.blueprints.todoapp.screens.addedittask
 
 import androidx.compose.runtime.Composable
 

@@ -1,4 +1,4 @@
-package com.example.android.architecture.blueprints.todoapp.taskdetail
+package com.example.android.architecture.blueprints.todoapp.screens.taskdetail
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -37,7 +37,7 @@ class TaskDetailViewModel @Inject constructor(
 
     fun refreshTask() {
 
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
 
             getTaskUseCase(taskId).collect { result ->
                 when (result) {
@@ -65,8 +65,21 @@ class TaskDetailViewModel @Inject constructor(
     }
 
     fun deleteTask() = viewModelScope.launch(Dispatchers.IO) {
-        deleteTaskUseCase(taskId)
-        _uiState.value = _uiState.value.copy(isTaskDeleted = true)
+        viewModelScope.launch(Dispatchers.IO) {
+            deleteTaskUseCase(taskId).collect { result ->
+                when (result) {
+                    is Resource.Success -> {
+                        _uiState.value =
+                            _uiState.value.copy(isTaskDeleted = true, isLoading = false)
+                    }
+                    is Resource.Loading -> {
+                        _uiState.value = _uiState.value.copy(isLoading = true)
+                    }
+                    is Resource.Error -> {
+                        _uiState.value = _uiState.value.copy(isLoading = false)
+                    }
+                }
+            }
+        }
     }
-
 }

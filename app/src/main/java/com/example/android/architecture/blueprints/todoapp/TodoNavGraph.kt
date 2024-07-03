@@ -27,8 +27,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.android.architecture.blueprints.todoapp.taskdetail.TaskDetailScreen
-import com.example.android.architecture.blueprints.todoapp.tasklist.TaskScreen
+import com.example.android.architecture.blueprints.todoapp.screens.taskdetail.TaskDetailScreen
+import com.example.android.architecture.blueprints.todoapp.screens.tasklist.TaskScreen
 import com.example.android.architecture.blueprints.todoapp.utils.AppModalDrawer
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch

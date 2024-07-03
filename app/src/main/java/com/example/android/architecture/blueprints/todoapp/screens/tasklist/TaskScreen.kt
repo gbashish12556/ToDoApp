@@ -1,4 +1,4 @@
-package com.example.android.architecture.blueprints.todoapp.tasklist
+package com.example.android.architecture.blueprints.todoapp.screens.tasklist
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*

@@ -2,7 +2,7 @@ package com.example.kutumbreadsms.data.source.db
 
 import com.example.android.architecture.blueprints.todoapp.data.source.local.TaskLocal
 import com.example.android.architecture.blueprints.todoapp.data.source.local.TaskLocalDataSource
-import com.example.android.architecture.blueprints.todoapp.tasklist.FilterType
+import com.example.android.architecture.blueprints.todoapp.screens.tasklist.FilterType
 import com.example.truecreditslist.db.PrDao
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers

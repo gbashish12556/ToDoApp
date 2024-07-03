@@ -63,7 +63,7 @@ class ApplicationModule {
     @Provides
     @Singleton
     fun provideApiHelper(apiService: ApiService): ApiHelper {
-        return ApiHelperImpl(apiService);
+        return ApiHelperImpl(apiService)
     }
 
     @Provides
@@ -79,22 +79,23 @@ class ApplicationModule {
     @Provides
     @Singleton
     fun provideLocalDataSource(prLocalDb: PrLocalDb): TaskLocalDataSource {
-        return RoomDataSource(prLocalDb.prDao());
+        return RoomDataSource(prLocalDb.prDao())
     }
 
     @Provides
     @Singleton
-    fun provideTaskRepository(prRemoteDataSource: TaskRemoteDataSource,
-                            prLocalDataSource: TaskLocalDataSource,
-                            networkHelper: NetworkHelper
+    fun provideTaskRepository(
+        prRemoteDataSource: TaskRemoteDataSource,
+        prLocalDataSource: TaskLocalDataSource,
+        networkHelper: NetworkHelper
     ): TaskRepository {
-        return DefaultTaskRepository(prRemoteDataSource, prLocalDataSource, networkHelper);
+        return DefaultTaskRepository(prRemoteDataSource, prLocalDataSource, networkHelper)
     }
 
     @Provides
     @Singleton
     fun provideRemoteDataSource(apiHelper: ApiHelper): TaskRemoteDataSource {
-        return RemoteDataSource(apiHelper);
+        return RemoteDataSource(apiHelper)
     }
 
 

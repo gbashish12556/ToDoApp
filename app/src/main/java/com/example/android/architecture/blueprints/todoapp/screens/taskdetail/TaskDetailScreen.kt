@@ -1,4 +1,4 @@
-package com.example.android.architecture.blueprints.todoapp.taskdetail
+package com.example.android.architecture.blueprints.todoapp.screens.taskdetail
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
