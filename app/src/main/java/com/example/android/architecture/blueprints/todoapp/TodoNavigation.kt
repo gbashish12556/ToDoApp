@@ -62,8 +62,12 @@ class TodoNavigationActions(private val navController: NavHostController) {
         navController.navigate("$TASK_DETAIL_SCREEN/$taskId")
     }
 
-    fun navigateToAddEditTask(title: Int, taskId: Int) {
-
+    fun navigateToAddEditTask(title: Int, taskId: Int? = null) {
+        navController.navigate(
+            "$ADD_EDIT_TASK_SCREEN/$title".let {
+                if (taskId != null) "$it?$TASK_ID_ARG=$taskId" else it
+            }
+        )
     }
 
     fun navigateToTasks(result: Int = 0) {

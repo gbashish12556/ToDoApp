@@ -31,7 +31,7 @@ fun TaskDetailScreen(
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         floatingActionButton = {
-            FloatingActionButton(onClick = { onEditTask(uistate.task!!.id) }) {
+            FloatingActionButton(onClick = { onEditTask(uistate.task.id!!) }) {
                 Icon(Icons.Filled.Edit, stringResource(id = R.string.edit_task))
             }
         },
@@ -46,7 +46,7 @@ fun TaskDetailScreen(
                 .padding(paddingValues),
             contentAlignment = Alignment.Center
         ) {
-            uistate.task?.let { task ->
+            uistate.task.let { task ->
                 TakDetailMainComponent(task = task)
             }
             if (uistate.isLoading) {

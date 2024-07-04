@@ -19,19 +19,40 @@ fun TaskLocal.localToTask() = Task(
     isCompleted = isCompleted
 )
 
-fun Task.taskToLocal() = TaskLocal(
-    id = id,
-    title = title,
-    content = content,
-    isCompleted = isCompleted
-)
+fun Task.taskToLocal(): TaskLocal {
+    id?.let {
+        return TaskLocal(
+            id = it,
+            title = title,
+            content = content,
+            isCompleted = isCompleted
+        )
+    } ?: run {
+        return TaskLocal(
+            title = title,
+            content = content,
+            isCompleted = isCompleted
+        )
+    }
+}
 
-fun Task.taskToRemote(remoteId: Int? = null) = TaskRemote(
-    id = remoteId,
-    title = title,
-    content = content,
-    status = if (isCompleted == true) Status.COMPLETED else Status.ACTIVE
-)
+fun Task.taskToRemote(remoteId: Int? = null): TaskRemote {
+    remoteId?.let {
+        return TaskRemote(
+            id = remoteId,
+            title = title,
+            content = content,
+            status = if (isCompleted == true) Status.COMPLETED else Status.ACTIVE
+        )
+    } ?: run {
+        return TaskRemote(
+            title = title,
+            content = content,
+            status = if (isCompleted == true) Status.COMPLETED else Status.ACTIVE
+        )
+    }
+
+}
 
 fun List<Task>.toTaskToLocal() = map { task: Task -> task.taskToLocal() }
 

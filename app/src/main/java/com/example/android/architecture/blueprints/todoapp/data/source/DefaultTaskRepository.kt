@@ -31,17 +31,22 @@ class DefaultTaskRepository(
     }
 
     override suspend fun updateTask(task: Task) = flow {
-        var remote = taskRemoteDataSource.updateTask(
-            task.taskToRemote(
-                taskLocalDataSource.getRemoteId(task.id)
+        task.id?.let {
+            var remote = taskRemoteDataSource.updateTask(
+                task.taskToRemote(
+                    taskLocalDataSource.getRemoteId(it)
+                )
             )
-        )
-        if (remote.isSuccessful) {
-            taskLocalDataSource.updateTask(task.taskToLocal())
-            emit(Resource.Success(task))
-        } else {
-            emit(Resource.Error(message = "Exception"))
+            if (remote.isSuccessful) {
+                taskLocalDataSource.updateTask(task.taskToLocal())
+                emit(Resource.Success(task))
+            } else {
+                emit(Resource.Error(task, message = "Exception"))
+            }
+        } ?: run {
+            emit(Resource.Error(task, message = "Exception"))
         }
+
     }
 
     override suspend fun deleteTask(taskId: Int) = flow {
@@ -65,7 +70,7 @@ class DefaultTaskRepository(
     }
 
     override suspend fun addTask(task: Task) = flow {
-        val remote = taskRemoteDataSource.updateTask(
+        val remote = taskRemoteDataSource.addTask(
             task.taskToRemote()
         )
         if (remote.isSuccessful) {

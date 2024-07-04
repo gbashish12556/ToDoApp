@@ -23,10 +23,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
+import com.example.android.architecture.blueprints.todoapp.screens.addedittask.AddEditTaskScreen
 import com.example.android.architecture.blueprints.todoapp.screens.taskdetail.TaskDetailScreen
 import com.example.android.architecture.blueprints.todoapp.screens.tasklist.TaskScreen
 import com.example.android.architecture.blueprints.todoapp.utils.AppModalDrawer
@@ -57,8 +60,8 @@ fun TodoNavGraph(
             ) {
                 AppModalDrawer(drawerState, currentRoute, navActions) {
                     TaskScreen(
-                        onTaskClick = { task -> navActions.navigateToTaskDetail(task.id) },
-                        onAddTask = {},
+                        onTaskClick = { task -> navActions.navigateToTaskDetail(task.id!!) },
+                        onAddTask = { navActions.navigateToAddEditTask(R.string.edit_task, null) },
                         openDrawer = { coroutineScope.launch { drawerState.open() } }
                     )
                 }
@@ -66,10 +69,28 @@ fun TodoNavGraph(
             composable(route = TodoDestinations.TASK_DETAIL_ROUTE) {
                 TaskDetailScreen(
                     onEditTask = { taskId ->
-                        navActions.navigateToAddEditTask(R.string.edit_task, taskId)
+
                     },
                     onBack = { navController.popBackStack() },
                     onDeleteTask = { navActions.navigateToTasks(DELETE_RESULT_OK) }
+                )
+            }
+            composable(
+                route = TodoDestinations.ADD_EDIT_TASK_ROUTE,
+                arguments = listOf(
+                    navArgument(TodoDestinationsArgs.TITLE_ARG) { type = NavType.IntType },
+                    navArgument(TodoDestinationsArgs.TASK_ID_ARG) {
+                        type = NavType.StringType; nullable = true
+                    },
+                )
+            ) { entry ->
+                var title = entry.arguments?.getInt(TodoDestinationsArgs.TITLE_ARG)!!
+                AddEditTaskScreen(
+                    title = title,
+                    onTaskUpdated = {
+                        navActions.navigateToTasks(ADD_EDIT_RESULT_OK)
+                    },
+                    onBack = { navController.popBackStack() },
                 )
             }
         }

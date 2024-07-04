@@ -1,6 +1,5 @@
 package com.example.navigithubpr.data.source.remote
 
-import android.util.Log
 import com.example.android.architecture.blueprints.todoapp.data.response.ApiCommonResponse
 import com.example.android.architecture.blueprints.todoapp.data.response.TaskListResponse
 import com.example.android.architecture.blueprints.todoapp.data.response.TaskRemote
@@ -12,7 +11,6 @@ class ApiHelperImpl @Inject constructor(private val apiService: ApiService) : Ap
 
     override suspend fun getAllResponse(): Response<TaskListResponse> {
         var res = apiService.getAllResponse()
-        Log.d("AshishGuptaNew1", "${res}")
         return res
     }
 
@@ -35,7 +33,6 @@ class ApiHelperImpl @Inject constructor(private val apiService: ApiService) : Ap
 
     override suspend fun deleteTask(taskId: Int): Response<ApiCommonResponse> {
         var res = apiService.deleteTask(id = taskId)
-        Log.d("AshishGuptaNew", "${res}")
         return res
     }
 

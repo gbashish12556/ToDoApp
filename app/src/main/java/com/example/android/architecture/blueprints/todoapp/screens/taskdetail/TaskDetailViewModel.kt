@@ -25,17 +25,16 @@ class TaskDetailViewModel @Inject constructor(
 ) : ViewModel() {
 
     val taskIdString: String? = savedStateHandle[TodoDestinationsArgs.TASK_ID_ARG]!!
-    val taskId: Int =
-        taskIdString?.toIntOrNull() ?: throw IllegalArgumentException("Invalid Task ID")
+    val taskId: Int? = taskIdString?.toIntOrNull()
 
     private var _uiState = MutableStateFlow(TaskDetailUiState())
     var uiState: StateFlow<TaskDetailUiState> = _uiState.asStateFlow()
 
     init {
-        refreshTask()
+        getTask()
     }
 
-    fun refreshTask() {
+    fun getTask() {
 
         viewModelScope.launch(Dispatchers.IO) {
 
@@ -64,7 +63,7 @@ class TaskDetailViewModel @Inject constructor(
         }
     }
 
-    fun deleteTask() = viewModelScope.launch(Dispatchers.IO) {
+    fun deleteTask() {
         viewModelScope.launch(Dispatchers.IO) {
             deleteTaskUseCase(taskId).collect { result ->
                 when (result) {

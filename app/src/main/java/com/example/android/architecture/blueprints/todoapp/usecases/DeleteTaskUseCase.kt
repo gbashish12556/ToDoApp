@@ -11,5 +11,4 @@ class DeleteTaskUseCase @Inject constructor(val taskRepository: TaskRepository) 
     override suspend fun invoke(taskId: Int?): Flow<Resource<Unit>> {
         return taskRepository.deleteTask(taskId!!)
     }
-
 }
