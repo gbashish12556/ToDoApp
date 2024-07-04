@@ -42,7 +42,11 @@ class TaskDetailViewModel @Inject constructor(
                 when (result) {
                     is Resource.Error -> {
                         _uiState.update {
-                            it.copy(isLoadingFailed = true, errorMessage = result.message!!)
+                            it.copy(
+                                isLoading = false,
+                                isLoadingFailed = true,
+                                errorMessage = result.message!!
+                            )
                         }
                     }
                     is Resource.Loading -> {
@@ -53,7 +57,7 @@ class TaskDetailViewModel @Inject constructor(
                     is Resource.Success -> {
                         _uiState.update { state ->
                             result.data.let { data ->
-                                state.copy(task = data!!)
+                                state.copy(isLoading = false, task = data!!)
                             }
                         }
                     }

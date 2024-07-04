@@ -27,14 +27,17 @@ class TaskScreenViewModel @Inject constructor(
     }
 
     fun refreshTask() {
-
         viewModelScope.launch {
 
             getTaskListUseCase(All()).collect { result ->
                 when (result) {
                     is Resource.Error -> {
                         _uiState.update {
-                            it.copy(isLoadingFailed = true, errorMessage = result.message!!)
+                            it.copy(
+                                isLoading = false,
+                                isLoadingFailed = true,
+                                errorMessage = result.message!!
+                            )
                         }
                     }
                     is Resource.Loading -> {
@@ -45,7 +48,7 @@ class TaskScreenViewModel @Inject constructor(
                     is Resource.Success -> {
                         _uiState.update { state ->
                             result.data.let { data ->
-                                state.copy(tasks = data!!)
+                                state.copy(isLoading = false, tasks = data!!)
                             }
                         }
                     }

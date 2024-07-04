@@ -20,6 +20,7 @@ class DefaultTaskRepository(
 ) : TaskRepository {
 
     override suspend fun getTasks(filterType: FilterType) = flow {
+        emit(Resource.Loading())
         refreshTask()
         try {
             taskLocalDataSource.getTasks(filterType).collect { data ->
@@ -31,6 +32,7 @@ class DefaultTaskRepository(
     }
 
     override suspend fun updateTask(task: Task) = flow {
+        emit(Resource.Loading())
         task.id?.let {
             var remote = taskRemoteDataSource.updateTask(
                 task.taskToRemote(
@@ -50,6 +52,7 @@ class DefaultTaskRepository(
     }
 
     override suspend fun deleteTask(taskId: Int) = flow {
+        emit(Resource.Loading())
         var remote = taskRemoteDataSource.deleteTask(taskLocalDataSource.getRemoteId(taskId))
         if (remote.isSuccessful) {
             taskLocalDataSource.deleteTask(taskId)
@@ -60,6 +63,7 @@ class DefaultTaskRepository(
     }
 
     override suspend fun getTask(taskId: Int) = flow {
+        emit(Resource.Loading())
         try {
             taskLocalDataSource.getTask(taskId).collect { data ->
                 emit(Resource.Success(data.localToTask()))
@@ -70,6 +74,7 @@ class DefaultTaskRepository(
     }
 
     override suspend fun addTask(task: Task) = flow {
+        emit(Resource.Loading())
         val remote = taskRemoteDataSource.addTask(
             task.taskToRemote()
         )
