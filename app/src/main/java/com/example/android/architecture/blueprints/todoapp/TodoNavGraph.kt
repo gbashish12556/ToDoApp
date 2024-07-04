@@ -61,7 +61,7 @@ fun TodoNavGraph(
                 AppModalDrawer(drawerState, currentRoute, navActions) {
                     TaskScreen(
                         onTaskClick = { task -> navActions.navigateToTaskDetail(task.id!!) },
-                        onAddTask = { navActions.navigateToAddEditTask(R.string.edit_task, null) },
+                        onAddTask = { navActions.navigateToAddEditTask(R.string.add_task, null) },
                         openDrawer = { coroutineScope.launch { drawerState.open() } }
                     )
                 }
@@ -69,7 +69,7 @@ fun TodoNavGraph(
             composable(route = TodoDestinations.TASK_DETAIL_ROUTE) {
                 TaskDetailScreen(
                     onEditTask = { taskId ->
-
+                        navActions.navigateToAddEditTask(R.string.edit_task, taskId)
                     },
                     onBack = { navController.popBackStack() },
                     onDeleteTask = { navActions.navigateToTasks(DELETE_RESULT_OK) }
